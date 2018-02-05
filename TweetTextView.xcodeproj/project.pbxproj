@@ -14,6 +14,19 @@
 		A1BF8A7F201CD5C600180399 /* TweetTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1BF8A7E201CD5C600180399 /* TweetTextView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A1B381622028770E00091837 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A1BF8A6B201CD5B500180399 /* TweetTextView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TweetTextView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1BF8A6E201CD5B500180399 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +89,7 @@
 				A1BF8A67201CD5B500180399 /* Sources */,
 				A1BF8A68201CD5B500180399 /* Frameworks */,
 				A1BF8A69201CD5B500180399 /* Resources */,
+				A1B381622028770E00091837 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

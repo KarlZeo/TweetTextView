@@ -25,6 +25,66 @@ class TweetTextView: NSTextView {
     
     public var hashtagTarget: AnyObject?
     
+    public var usernameTextColor: NSColor = {
+        let color = NSColor(cgColor: NSColor.blue.cgColor)
+        return color!
+    }()
+    
+    public var linkTextColor: NSColor = {
+        let color = NSColor(cgColor: NSColor.blue.cgColor)
+        return color!
+    }()
+    
+    public var hashtagTextColor: NSColor = {
+        let color = NSColor(cgColor: NSColor.lightGray.cgColor)
+        return color!
+    }()
+    
+    public var usernameTextFont: NSFont = {
+        let font = NSFont.boldSystemFont(ofSize: 14.0)
+        return font
+    }()
+    
+    public var linkTextFont: NSFont = {
+        let font = NSFont.boldSystemFont(ofSize: 14.0)
+        return font
+    }()
+    
+    public var hashtagTextFont: NSFont = {
+        let font = NSFont.systemFont(ofSize: 14.0)
+        return font
+    }()
+    
+    public var textShadow: NSShadow = {
+        let shadow = NSShadow()
+        shadow.shadowColor = NSColor(deviceWhite: 1, alpha: 0.8)
+        shadow.shadowBlurRadius = 0
+        shadow.shadowOffset = NSMakeSize(0, -1)
+        return shadow
+    }()
+    
+    public var paragraphStyle: NSMutableParagraphStyle = {
+        let style = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle
+        style?.minimumLineHeight = 22
+        style?.maximumLineHeight = 22
+        style?.paragraphSpacing = 0
+        style?.paragraphSpacingBefore = 0
+        style?.tighteningFactorForTruncation = 4
+        style?.alignment = .natural
+        style?.lineBreakMode = .byWordWrapping
+        return style!
+    }()
+    
+    var statusString: String {
+        set {
+            let attStr = self.setAttributedString(newValue)
+            self.textStorage?.setAttributedString(attStr)
+        }
+        get {
+            return ""
+        }
+    }
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         
@@ -51,36 +111,21 @@ class TweetTextView: NSTextView {
         self.isSelectable = true
     }
     
-    var statusString: String {
-        set {
-            let attStr = self.setAttributedString(newValue)
-            self.textStorage?.setAttributedString(attStr)
-        }
-        get {
-            return ""
-        }
-    }
     
     private func setAttributedString(_ originString: String) -> NSMutableAttributedString {
         let statusString: String = originString
         
         let attributedStatusString = NSMutableAttributedString(string: statusString)
         
-        let textShadow: NSShadow? = NSShadow()
-        textShadow?.shadowColor = NSColor(deviceWhite: 1, alpha: 0.8)
-        textShadow?.shadowBlurRadius = 0
-        textShadow?.shadowOffset = NSMakeSize(0, -1)
-        
-        let paragraphStyle = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle
-        paragraphStyle?.minimumLineHeight = 22
-        paragraphStyle?.maximumLineHeight = 22
-        paragraphStyle?.paragraphSpacing = 0
-        paragraphStyle?.paragraphSpacingBefore = 0
-        paragraphStyle?.tighteningFactorForTruncation = 4
-        paragraphStyle?.alignment = .natural
-        paragraphStyle?.lineBreakMode = .byWordWrapping
-        
-        let fullAttributes = [NSAttributedStringKey.foregroundColor: NSColor(deviceHue: 0.53, saturation: 0.13, brightness: 0.26, alpha: 1), NSAttributedStringKey.shadow: textShadow, .cursor: NSCursor.arrow, NSAttributedStringKey.kern: 0.0, NSAttributedStringKey.ligature: 0, NSAttributedStringKey.paragraphStyle: paragraphStyle, NSAttributedStringKey.font: NSFont.systemFont(ofSize: 14.0)] as [NSAttributedStringKey : Any]
+        let fullAttributes = [
+            NSAttributedStringKey.foregroundColor: NSColor(deviceHue: 0.53, saturation: 0.13, brightness: 0.26, alpha: 1),
+            NSAttributedStringKey.shadow: self.textShadow,
+            NSAttributedStringKey.cursor: NSCursor.arrow,
+            NSAttributedStringKey.kern: 0.0,
+            NSAttributedStringKey.ligature: 0,
+            NSAttributedStringKey.paragraphStyle: self.paragraphStyle,
+            NSAttributedStringKey.font: NSFont.systemFont(ofSize: 14.0)
+            ] as [NSAttributedStringKey : Any]
         attributedStatusString.addAttributes(fullAttributes, range: NSRange(location: 0, length: statusString.count))
         
         let linkMatches = scanString(forLinks: statusString)
@@ -92,7 +137,12 @@ class TweetTextView: NSTextView {
             if range.location != NSNotFound {
                 let string: NSString = NSString(string: statusString)
                 let linkMatchedString = string.substring(with: range)
-                let linkAttr: NSDictionary = [NSAttributedStringKey.cursor: NSCursor.pointingHand, NSAttributedStringKey.foregroundColor: NSColor.blue, NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 14.0), TVLinkMatchAttributeName: linkMatchedString]
+                let linkAttr: NSDictionary = [
+                    NSAttributedStringKey.cursor: NSCursor.pointingHand,
+                    NSAttributedStringKey.foregroundColor: self.linkTextColor,
+                    NSAttributedStringKey.font: self.linkTextFont,
+                    TVLinkMatchAttributeName: linkMatchedString
+                ]
                 attributedStatusString.addAttributes(linkAttr as! [NSAttributedStringKey : Any], range: range)
             }
         }
@@ -103,7 +153,12 @@ class TweetTextView: NSTextView {
                 let string: NSString = NSString(string: statusString)
                 let usernameMatchedString = string.substring(with: range)
                 // Add custom attribute of UsernameMatch to indicate where our usernames are found
-                let linkAttr2: NSDictionary = [NSAttributedStringKey.foregroundColor: NSColor.black, NSAttributedStringKey.cursor: NSCursor.pointingHand, NSAttributedStringKey.font: NSFont.boldSystemFont(ofSize: 14.0), TVUsernameMatchAttributeName: usernameMatchedString]
+                let linkAttr2: NSDictionary = [
+                    NSAttributedStringKey.foregroundColor: self.usernameTextColor,
+                    NSAttributedStringKey.cursor: NSCursor.pointingHand,
+                    NSAttributedStringKey.font: self.usernameTextFont,
+                    TVUsernameMatchAttributeName: usernameMatchedString
+                ]
                 attributedStatusString.addAttributes(linkAttr2 as! [NSAttributedStringKey : Any], range: range)
             }
         }
@@ -114,7 +169,12 @@ class TweetTextView: NSTextView {
                 let string: NSString = NSString(string: statusString)
                 let hashtagMatchedString = string.substring(with: range)
                 // Add custom attribute of HashtagMatch to indicate where our hashtags are found
-                let linkAttr3: NSDictionary = [NSAttributedStringKey.foregroundColor: NSColor.gray, NSAttributedStringKey.foregroundColor: NSCursor.pointingHand, NSAttributedStringKey.font: NSFont.systemFont(ofSize: 14.0), TVHashtagMatchAttributeName: hashtagMatchedString]
+                let linkAttr3: NSDictionary = [
+                    NSAttributedStringKey.foregroundColor: self.hashtagTextColor,
+                    NSAttributedStringKey.foregroundColor: NSCursor.pointingHand,
+                    NSAttributedStringKey.font: self.hashtagTextFont,
+                    TVHashtagMatchAttributeName: hashtagMatchedString
+                ]
                 attributedStatusString.addAttributes(linkAttr3 as! [NSAttributedStringKey : Any], range: range)
             }
         }
@@ -138,7 +198,7 @@ class TweetTextView: NSTextView {
         }
     }
     
-    func scanString(forLinks string: String) -> [NSTextCheckingResult] {
+    private func scanString(forLinks string: String) -> [NSTextCheckingResult] {
         var regEx: NSRegularExpression? = nil
         var onceToken = NSInteger()
         if (onceToken == 0) {
@@ -156,7 +216,7 @@ class TweetTextView: NSTextView {
         return matches ?? [NSTextCheckingResult]()
     }
     
-    func scanString(forUsernames string: String) -> [NSTextCheckingResult] {
+    private func scanString(forUsernames string: String) -> [NSTextCheckingResult] {
         var regEx: NSRegularExpression? = nil
         var onceToken = NSInteger()
         if (onceToken == 0) {
@@ -174,7 +234,7 @@ class TweetTextView: NSTextView {
         return matches ?? [NSTextCheckingResult]()
     }
     
-    func scanString(forHashtags string: String) -> [NSTextCheckingResult] {
+    private func scanString(forHashtags string: String) -> [NSTextCheckingResult] {
         var regEx: NSRegularExpression? = nil
         var onceToken = NSInteger()
         if (onceToken == 0) {

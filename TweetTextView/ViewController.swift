@@ -17,8 +17,14 @@ class ViewController: NSViewController {
         
         let insetRect = CGRect(x: 0, y: 0, width: 480, height: 270)
         let statusView = TweetTextView(frame: insetRect)
+        statusView.usernameTextColor = NSColor.red
+        statusView.linkTextColor = NSColor.purple
+        statusView.hashtagTextColor = NSColor.lightGray
+        statusView.usernameTextFont = NSFont.systemFont(ofSize: 18.0)
+        statusView.linkTextFont = NSFont.boldSystemFont(ofSize: 15.0)
+        statusView.hashtagTextFont = NSFont.boldSystemFont(ofSize: 20.0)
         statusView.statusString = statusString
-        // Add to window and we're done.
+        
         self.view.addSubview(statusView)
         
         statusView.linkTarget = self
