@@ -8,7 +8,7 @@ Swift 4.0+
 
 ## How to Use
 
-```
+```Swift
 //Set example String.
 let statusString: String = "Example tweet text here. Don't you just love AppKit? Here's a reference to @Twitter. Check out this cool new site: https://www.apple.com #hashtag #tutorial #中文测试"
 
