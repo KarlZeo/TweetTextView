@@ -118,14 +118,14 @@ class TweetTextView: NSTextView {
         let attributedStatusString = NSMutableAttributedString(string: statusString)
         
         let fullAttributes = [
-            NSAttributedStringKey.foregroundColor: NSColor(deviceHue: 0.53, saturation: 0.13, brightness: 0.26, alpha: 1),
-            NSAttributedStringKey.shadow: self.textShadow,
-            NSAttributedStringKey.cursor: NSCursor.arrow,
-            NSAttributedStringKey.kern: 0.0,
-            NSAttributedStringKey.ligature: 0,
-            NSAttributedStringKey.paragraphStyle: self.paragraphStyle,
-            NSAttributedStringKey.font: NSFont.systemFont(ofSize: 14.0)
-            ] as [NSAttributedStringKey : Any]
+            NSAttributedString.Key.foregroundColor: NSColor(deviceHue: 0.53, saturation: 0.13, brightness: 0.26, alpha: 1),
+            NSAttributedString.Key.shadow: self.textShadow,
+            NSAttributedString.Key.cursor: NSCursor.arrow,
+            NSAttributedString.Key.kern: 0.0,
+            NSAttributedString.Key.ligature: 0,
+            NSAttributedString.Key.paragraphStyle: self.paragraphStyle,
+            NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14.0)
+            ] as [NSAttributedString.Key : Any]
         attributedStatusString.addAttributes(fullAttributes, range: NSRange(location: 0, length: statusString.count))
         
         let linkMatches = scanString(forLinks: statusString)
@@ -138,12 +138,12 @@ class TweetTextView: NSTextView {
                 let string: NSString = NSString(string: statusString)
                 let linkMatchedString = string.substring(with: range)
                 let linkAttr: NSDictionary = [
-                    NSAttributedStringKey.cursor: NSCursor.pointingHand,
-                    NSAttributedStringKey.foregroundColor: self.linkTextColor,
-                    NSAttributedStringKey.font: self.linkTextFont,
+                    NSAttributedString.Key.cursor: NSCursor.pointingHand,
+                    NSAttributedString.Key.foregroundColor: self.linkTextColor,
+                    NSAttributedString.Key.font: self.linkTextFont,
                     TVLinkMatchAttributeName: linkMatchedString
                 ]
-                attributedStatusString.addAttributes(linkAttr as! [NSAttributedStringKey : Any], range: range)
+                attributedStatusString.addAttributes(linkAttr as! [NSAttributedString.Key : Any], range: range)
             }
         }
         
@@ -154,12 +154,12 @@ class TweetTextView: NSTextView {
                 let usernameMatchedString = string.substring(with: range)
                 // Add custom attribute of UsernameMatch to indicate where our usernames are found
                 let linkAttr2: NSDictionary = [
-                    NSAttributedStringKey.foregroundColor: self.usernameTextColor,
-                    NSAttributedStringKey.cursor: NSCursor.pointingHand,
-                    NSAttributedStringKey.font: self.usernameTextFont,
+                    NSAttributedString.Key.foregroundColor: self.usernameTextColor,
+                    NSAttributedString.Key.cursor: NSCursor.pointingHand,
+                    NSAttributedString.Key.font: self.usernameTextFont,
                     TVUsernameMatchAttributeName: usernameMatchedString
                 ]
-                attributedStatusString.addAttributes(linkAttr2 as! [NSAttributedStringKey : Any], range: range)
+                attributedStatusString.addAttributes(linkAttr2 as! [NSAttributedString.Key : Any], range: range)
             }
         }
         
@@ -170,12 +170,12 @@ class TweetTextView: NSTextView {
                 let hashtagMatchedString = string.substring(with: range)
                 // Add custom attribute of HashtagMatch to indicate where our hashtags are found
                 let linkAttr3: NSDictionary = [
-                    NSAttributedStringKey.foregroundColor: self.hashtagTextColor,
-                    NSAttributedStringKey.foregroundColor: NSCursor.pointingHand,
-                    NSAttributedStringKey.font: self.hashtagTextFont,
+                    NSAttributedString.Key.foregroundColor: self.hashtagTextColor,
+                    NSAttributedString.Key.foregroundColor: NSCursor.pointingHand,
+                    NSAttributedString.Key.font: self.hashtagTextFont,
                     TVHashtagMatchAttributeName: hashtagMatchedString
                 ]
-                attributedStatusString.addAttributes(linkAttr3 as! [NSAttributedStringKey : Any], range: range)
+                attributedStatusString.addAttributes(linkAttr3 as! [NSAttributedString.Key : Any], range: range)
             }
         }
         return attributedStatusString

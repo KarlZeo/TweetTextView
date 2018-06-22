@@ -4,7 +4,7 @@ This is a custom NSTextView to heighlight username hashtag and link.
 
 ## Support
 
-Swift 4.0+
+Swift 4.2
 
 ## How to Use
 
